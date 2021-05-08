@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import About from "./About";
 import NewPost from "./NewPost";
 import Container from "./PostPage";
+import Login from "./Login";
 
 export default function App() {
     return (
@@ -29,6 +30,9 @@ export default function App() {
                                 <li className="nav-item">
                                     <a className="nav-link"><Link to="/postPage">PostPage </Link></a>
                                 </li>
+                                <li className="nav-item">
+                                    <a className="nav-link"><Link to="/login">Login </Link></a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -46,6 +50,9 @@ export default function App() {
                     </Route>
                     <Route path="/postPage">
                         <Container/>
+                    </Route>
+                    <Route path="/login">
+                        <Login/>
                     </Route>
                     <Route path="/">
                         <Home/>

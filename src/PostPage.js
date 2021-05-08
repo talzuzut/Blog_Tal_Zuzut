@@ -13,7 +13,7 @@ class MainMenu extends React.Component {
                     <span> <a href={""}>Contact Me </a></span>
 
                 </td>
-                <td className='login'><a href={""}> Login </a></td>
+                <td className='login'><a href= './Login.js'> Login </a></td>
             </tr>);
     }
 }
