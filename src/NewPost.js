@@ -24,7 +24,7 @@ export default class NewPost extends React.Component {
         console.log("state-", this.state)
         axios({
             method: 'post',
-            url: 'http://localhost:5000/posts',
+            url: '/posts',
             data: {
                 ...this.state
             }

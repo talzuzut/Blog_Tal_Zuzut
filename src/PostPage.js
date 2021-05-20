@@ -50,7 +50,7 @@ export default class Container extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(' http://localhost:5000/posts').then(response => {
+        axios.get('/posts').then(response => {
 
             if (response && response.data && response.status === 200) {
                 this.setState({
