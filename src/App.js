@@ -9,34 +9,38 @@ import axios from "axios";
 import Cookies from 'universal-cookie';
 
 
-export default class  App extends React.Component {
+export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoggedIn: false,
-            session_id:""
+            session_id: ""
         };
     }
+
     handleLogChange = logVal => {
-        this.setState({ logVal })
+        this.setState({logVal})
     }
-     logout = (e) => {
-         const cookies = new Cookies();
-         const sess_id = cookies.get('session_id')
-         console.log(sess_id);
-         if (sess_id === undefined){
-             window.alert("login first");
-             return;
-         }
-         this.setState({session_id: sess_id})
-         const url = "/logout";
-         const data = {
-             session_id: cookies.get('session_id')
-         }
-        axios.post(url,data)
+    logout = (e) => {
+        const cookies = new Cookies();
+        const sess_id = cookies.get('session_id')
+        console.log(sess_id);
+        if (sess_id === undefined) {
+            window.alert("login first");
+            return;
+        }
+        this.setState({session_id: sess_id})
+        const url = "/logout";
+        const data = {
+            session_id: cookies.get('session_id')
+        }
+        axios.post(url, data)
             .then((res) => {
-                this.setState({isLoggedIn: false,
-                                   session_id:""});
+                this.setState({
+                    isLoggedIn: false,
+                    session_id: ""
+                });
+                cookies.remove('session_id');
                 window.alert("Logged out successfully ")
             })
             .catch((err) => {
@@ -44,18 +48,8 @@ export default class  App extends React.Component {
             });
 
     }
+
     render() {
-        let logComp;
-        if (!this.state.isLoggedIn){
-            logComp =<li className="nav-item">
-                <a className="nav-link"><Link to="/login">Login </Link></a>
-            </li>
-        }
-        else {
-            logComp = <li>
-                <button className="btn btn-secondary" onClick={this.logout}> Logout</button>
-            </li>
-        }
         return (
             <Router>
                 <div>
@@ -80,8 +74,12 @@ export default class  App extends React.Component {
                                     <li className="nav-item">
                                         <a className="nav-link"><Link to="/postPage">PostPage </Link></a>
                                     </li>
-                                    {logComp}
-
+                                    <li className="nav-item">
+                                        <a className="nav-link"><Link to="/login">Login </Link></a>
+                                    </li>
+                                    <li>
+                                        <button className="btn btn-secondary" onClick={this.logout}> Logout</button>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -101,7 +99,7 @@ export default class  App extends React.Component {
                             <Container/>
                         </Route>
                         <Route path="/login">
-                            <Login name={this.state.isLoggedIn} onNameChange={this.handleLogChange} />
+                            <Login name={this.state.isLoggedIn} onNameChange={this.handleLogChange}/>
                         </Route>
                         <Route path="/signUp">
                             <SignUp/>
@@ -115,6 +113,7 @@ export default class  App extends React.Component {
         );
     }
 }
+
 function Home() {
     return <h2>Welcome to my practice Home page, Enjoy</h2>;
 }

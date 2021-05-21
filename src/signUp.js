@@ -2,6 +2,7 @@ import React from "react";
 import axios from 'axios';
 import ReactDOM from "react-dom";
 import App from "./App";
+
 export default class SignUp extends React.Component {
     constructor(props) {
         super(props);
@@ -43,7 +44,7 @@ export default class SignUp extends React.Component {
                 window.location.href = "http://localhost:3000/";
                 ReactDOM.render(
                     <React.StrictMode>
-                        <App />
+                        <App/>
                     </React.StrictMode>,
                     document.getElementById('root')
                 );
@@ -57,23 +58,25 @@ export default class SignUp extends React.Component {
                 document.getElementById("signupForm").reset();
             });
     }
-    render()
-     {
-return (
-    <div id="formContent">
-        <div> Signup Page</div>
-        <div className="fadeIn first">
-        </div>
 
-        <form id ='signupForm'>
-            <input type="text" id="user" className="fadeIn second" name="login" placeholder="Username" onChange={this.changeUsername}/>
-            <input type="password" id="pass" className="fadeIn third" name="password" placeholder="Password" onChange={this.changePassword}/>
-            <input type="button" className="fadeIn fourth" value="Signup" onClick={this.doSignUp}/>
-        </form>
+    render() {
+        return (
+            <div id="formContent">
+                <div> Signup Page</div>
+                <div className="fadeIn first">
+                </div>
+
+                <form id='signupForm'>
+                    <input type="text" id="user" className="fadeIn second" name="login" placeholder="Username"
+                           onChange={this.changeUsername}/>
+                    <input type="password" id="pass" className="fadeIn third" name="password" placeholder="Password"
+                           onChange={this.changePassword}/>
+                    <input type="button" className="fadeIn fourth" value="Signup" onClick={this.doSignUp}/>
+                </form>
 
 
-    </div>
-);
+            </div>
+        );
 
-}
     }
+}
