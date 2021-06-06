@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './App.css';
-import reportWebVitals from './reportWebVitals';
+import '../App.css';
+import reportWebVitals from '../reportWebVitals';
 import axios from "axios";
 
 
@@ -81,7 +81,4 @@ export default class Container extends React.Component {
     }
 }
 
-ReactDOM.render(<Container/>, document.getElementById('root'));
-
-
-reportWebVitals();
+// ReactDOM.render(<Container/>, document.getElementById('root'));

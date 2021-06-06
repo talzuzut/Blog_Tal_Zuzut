@@ -14,7 +14,7 @@
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^1.1.5",
     "web-vitals": "^1.0.1"
   },
   "proxy": "http://localhost:5000",
@@ -26,8 +26,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {

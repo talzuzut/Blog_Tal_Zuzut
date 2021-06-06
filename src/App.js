@@ -1,10 +1,10 @@
 import React from "react";
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
-import About from "./About";
-import NewPost from "./NewPost";
-import Container from "./PostPage";
-import Login from "./Login";
-import SignUp from "./signUp";
+import About from "./Pages/About";
+import NewPost from "./Components/NewPost";
+import Container from "./Components/PostPage";
+import Login from "./Components/Login";
+import SignUp from "./Pages/signUp";
 import axios from "axios";
 import Cookies from 'universal-cookie';
 
@@ -19,7 +19,9 @@ export default class App extends React.Component {
     }
 
     handleLogChange = logVal => {
-        this.setState({logVal})
+        this.setState({isLoggedIn:logVal})
+
+
     }
     logout = (e) => {
         const cookies = new Cookies();
@@ -50,6 +52,8 @@ export default class App extends React.Component {
     }
 
     render() {
+        const {isLoggedIn} = this.state;
+
         return (
             <Router>
                 <div>
@@ -72,14 +76,16 @@ export default class App extends React.Component {
                                         <a className="nav-link"><Link to="/newPost">NewPost </Link></a>
                                     </li>
                                     <li className="nav-item">
-                                        <a className="nav-link"><Link to="/postPage">PostPage </Link></a>
-                                    </li>
-                                    <li className="nav-item">
+                                    <a className="nav-link"><Link to="/postPage">PostPage </Link></a>
+                                </li>
+                                    {!isLoggedIn ?
+                                        <li className="nav-item">
                                         <a className="nav-link"><Link to="/login">Login </Link></a>
-                                    </li>
-                                    <li>
+
+                                        </li>    :
+                                        <li>
                                         <button className="btn btn-secondary" onClick={this.logout}> Logout</button>
-                                    </li>
+                                        </li>}
                                 </ul>
                             </div>
                         </div>
@@ -99,7 +105,7 @@ export default class App extends React.Component {
                             <Container/>
                         </Route>
                         <Route path="/login">
-                            <Login name={this.state.isLoggedIn} onNameChange={this.handleLogChange}/>
+                            <Login isLoggedIn={this.state.isLoggedIn} onNameChange={this.handleLogChange}/>
                         </Route>
                         <Route path="/signUp">
                             <SignUp/>

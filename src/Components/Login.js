@@ -1,8 +1,9 @@
 import React from "react";
 import axios from 'axios';
-import App from "./App";
+import { withRouter } from "react-router-dom";
 
-export default class Login extends React.Component {
+
+class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -10,9 +11,10 @@ export default class Login extends React.Component {
             resp: null,
             user: null,
             pass: null,
-            isLoggedIn: null
+            isLoggedIn: props.isLoggedIn
         };
     }
+
 
     handleInputChange = event => {
         this.props.onNameChange(event.target.value)
@@ -43,21 +45,16 @@ export default class Login extends React.Component {
                     isLoggedIn: true
                 });
                 window.alert("Success!");
-                document.getElementById("loginForm").reset();
-                window.location.href = "http://localhost:3000/";
-                return <App isLoggedIn={true}/>;
-
+                this.props.onNameChange(true);
+                this.props.history.push("/");
             })
             .catch((err) => {
                 this.setState({
                     data: [],
-                    resp: "Error: failed to login user."
-                });
-                this.setState({
+                    resp: "Error: failed to login user.",
                     success: 'not_auth!'
                 });
                 window.alert("Not Authorised, try again!");
-                document.getElementById("loginForm").reset();
             });
     }
 
@@ -87,3 +84,5 @@ export default class Login extends React.Component {
 
     }
 }
+
+export default withRouter(Login);
