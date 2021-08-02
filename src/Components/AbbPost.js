@@ -1,7 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import '../App.css';
-import reportWebVitals from '../reportWebVitals';
 import axios from "axios";
 
 
@@ -10,10 +8,7 @@ class MainHeader extends React.Component {
         return (
             <tr>
                 <td>
-                    <h1> This is my blog</h1>
-                </td>
-                <td>
-                    <h1 className='rightSide' id='latest'> Latest</h1>
+                    <h1>The Latest Posts </h1>
                 </td>
             </tr>
         );
@@ -21,19 +16,15 @@ class MainHeader extends React.Component {
 }
 
 
-class PostComponent extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+class AbbPostComponent extends React.Component {
+
 
     render() {
         return (
             <td className='whole_border'>
       <span>
-        <h3>Blog post {this.props.id} </h3>
-          {this.props.content}
+        <h3 className={'my_header'}>Blog post {this.props.id} </h3>
       </span>
-                <br/> <br/> <br/>
                 <span
                     className='bottom'> Published {this.props.publishedDays} days ago by {this.props.publishedBy}</span>
             </td>
@@ -41,7 +32,7 @@ class PostComponent extends React.Component {
     }
 }
 
-export default class Container extends React.Component {
+export default class AbbContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -50,7 +41,7 @@ export default class Container extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('/posts').then(response => {
+        axios.get('/api/posts').then(response => {
 
             if (response && response.data && response.status === 200) {
                 this.setState({
@@ -65,11 +56,10 @@ export default class Container extends React.Component {
         const postsList =
             this.state.posts_list.map(post =>
 
-                <tr><PostComponent {...post}/></tr>
+                <tr><AbbPostComponent {...post} key={post.id}/></tr>
             )
-        console.log(postsList)
         return (
-            <table className='border_space' id='MainTable'>
+            <table className='border_space AbbTable'>
                 <thead>
                 <MainHeader/>
                 </thead>
@@ -81,4 +71,3 @@ export default class Container extends React.Component {
     }
 }
 
-// ReactDOM.render(<Container/>, document.getElementById('root'));

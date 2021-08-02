@@ -1,27 +1,44 @@
 import React from "react";
-import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Link, Route, Switch, useParams} from "react-router-dom";
 import About from "./Pages/About";
 import NewPost from "./Components/NewPost";
-import Container from "./Components/PostPage";
+import Container from "./Components/AllPosts";
 import Login from "./Components/Login";
 import SignUp from "./Pages/signUp";
 import axios from "axios";
 import Cookies from 'universal-cookie';
+import AbbContainer from "./Components/AbbPost";
+import MyPosts from "./Components/myPosts";
+import SinglePost from "./Components/SinglePost";
+/*TODO:
+1. Redirect (also render leads to signing out) in the end of Newpost, and logout
 
 
+*/
 export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoggedIn: false,
-            session_id: ""
+            session_id: "",
+            userID: ""
         };
     }
 
-    handleLogChange = logVal => {
-        this.setState({isLoggedIn:logVal})
+    handleLogChange = ({logVal, userID}) => {
+        console.log("Handle logchange -logVal " + logVal + " user_id = " + userID);
+        let cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)session_id\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
+        this.setState({
+            isLoggedIn: logVal, session_id: cookieValue,
+            userID: userID
+        })
+    }
 
+    newPostHandle = ({logVal, userID}) => {
+        this.setState({
+        post_count:1
+        })
     }
     logout = (e) => {
         const cookies = new Cookies();
@@ -32,7 +49,7 @@ export default class App extends React.Component {
             return;
         }
         this.setState({session_id: sess_id})
-        const url = "/logout";
+        const url = "/api/logout";
         const data = {
             session_id: cookies.get('session_id')
         }
@@ -52,8 +69,7 @@ export default class App extends React.Component {
     }
 
     render() {
-        const {isLoggedIn} = this.state;
-
+        const {isLoggedIn, userID, session_id} = this.state;
         return (
             <Router>
                 <div>
@@ -67,61 +83,76 @@ export default class App extends React.Component {
                             <div className="collapse navbar-collapse" id="navbarNav">
                                 <ul className="navbar-nav">
                                     <li className="nav-item">
-                                        <a className="nav-link active" aria-current="page" href="/">Home</a>
+                                        <a className="nav-link active" aria-current="page">
+                                            <Link to="/">Home </Link></a>
                                     </li>
                                     <li className="nav-item">
                                         <a className="nav-link"> <Link to="/about">About </Link></a>
                                     </li>
+                                    {isLoggedIn &&
                                     <li className="nav-item">
                                         <a className="nav-link"><Link to="/newPost">NewPost </Link></a>
                                     </li>
+                                    }
                                     <li className="nav-item">
-                                    <a className="nav-link"><Link to="/postPage">PostPage </Link></a>
-                                </li>
-                                    {!isLoggedIn ?
-                                        <li className="nav-item">
-                                        <a className="nav-link"><Link to="/login">Login </Link></a>
+                                        <a className="nav-link"><Link to="/postPage">PostPage </Link></a>
 
-                                        </li>    :
-                                        <li>
-                                        <button className="btn btn-secondary" onClick={this.logout}> Logout</button>
+                                    </li>
+                                    {isLoggedIn &&
+                                    <li className="nav-item">
+                                        <a className="nav-link"><Link to="/myPosts">My Posts </Link></a>
+                                    </li>
+                                    }
+                                    {!isLoggedIn ?
+
+                                        <li className="nav-item">
+                                            <a className="nav-link"><Link to="/login">Login </Link></a>
+
+                                        </li>
+                                        :
+
+                                        <li className="nav-item">
+                                            <button className="btn btn-secondary nav-link"
+                                                    onClick={this.logout}> Logout
+                                            </button>
                                         </li>}
+
+
                                 </ul>
                             </div>
                         </div>
                     </nav>
 
-
-                    {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
                     <Switch>
+                        <Route path="/posts/:id" >
+                            <SinglePost userID={userID} sessionID={session_id}/>
+                        </Route>
                         <Route path="/about">
                             <About/>
                         </Route>
                         <Route path="/newPost">
-                            <NewPost/>
+                            <NewPost userID={userID} onNameChange={this.newPostHandle}/>
                         </Route>
                         <Route path="/postPage">
                             <Container/>
                         </Route>
                         <Route path="/login">
-                            <Login isLoggedIn={this.state.isLoggedIn} onNameChange={this.handleLogChange}/>
+                            <Login isLoggedIn={isLoggedIn} onNameChange={this.handleLogChange}/>
                         </Route>
                         <Route path="/signUp">
                             <SignUp/>
                         </Route>
+                        <Route path="/myPosts">
+                            <MyPosts userID={userID} session_id={session_id}/>
+                        </Route>
                         <Route path="/">
-                            <Home/>
+                            <AbbContainer/>
                         </Route>
                     </Switch>
                 </div>
             </Router>
         );
     }
-}
-
-function Home() {
-    return <h2>Welcome to my practice Home page, Enjoy</h2>;
 }
 
 

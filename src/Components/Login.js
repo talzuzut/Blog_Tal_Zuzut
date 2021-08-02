@@ -1,7 +1,6 @@
 import React from "react";
 import axios from 'axios';
-import { withRouter } from "react-router-dom";
-
+import {withRouter} from "react-router-dom";
 
 class Login extends React.Component {
     constructor(props) {
@@ -32,7 +31,7 @@ class Login extends React.Component {
     }
 
     doLogin = (e) => {
-        const url = "/login";
+        const url = "/api/login";
         const data = {
             user: this.state.user,
             pass: this.state.pass
@@ -40,12 +39,14 @@ class Login extends React.Component {
         axios.post(url, data)
             .then((res) => {
                 this.setState({
-                    data: [],
+                    data: data,
                     resp: "Success: user logged in.",
-                    isLoggedIn: true
+                    isLoggedIn: true,
+                    user_id: res["data"]["user_id"]
                 });
                 window.alert("Success!");
-                this.props.onNameChange(true);
+                this.props.onNameChange({logVal: true, userID: this.state.user_id});
+                console.log(this.props)
                 this.props.history.push("/");
             })
             .catch((err) => {
